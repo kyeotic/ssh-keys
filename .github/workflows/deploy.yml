@@ -16,6 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Run tests
+        run: deno task test
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:

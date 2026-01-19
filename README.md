@@ -2,21 +2,7 @@
 
 A Deno Deploy server for managing and syncing SSH public keys across homelab machines.
 
-## Overview
-
-This server provides a managed subset of SSH keys that can be synced to `~/.ssh/authorized_keys` on target machines. Pre-existing keys are preserved, while managed keys (between marker comments) are kept in sync with this server.
-
-## Endpoints
-
-| Endpoint           | Description                                        |
-| ------------------ | -------------------------------------------------- |
-| `/authorized_keys` | Returns all public keys from the `keys/` directory |
-| `/sync.sh`         | Returns the sync script                            |
-| `/initialize`      | Returns an installer script for initial setup      |
-
-## Usage
-
-### Initial Setup (New Machine)
+## Quick Start
 
 Run the following command to install the sync script and set up hourly cron:
 
@@ -34,19 +20,9 @@ This will:
 3. Add a cron job to run hourly
 4. Run an initial sync
 
-### Manual Sync
+## Overview
 
-To manually trigger a sync without installing:
-
-```bash
-curl -fsSL https://ssh-keys.kye.dev/sync.sh | sh
-```
-
-### View Current Keys
-
-```bash
-curl https://ssh-keys.kye.dev/authorized_keys
-```
+This server provides a managed subset of SSH keys that can be synced to `~/.ssh/authorized_keys` on target machines. Pre-existing keys are preserved, while managed keys (between marker comments) are kept in sync with this server.
 
 ## How It Works
 
@@ -69,14 +45,36 @@ Any keys outside these markers are preserved and unaffected by syncs.
 
 All machines will pick up the changes on their next hourly sync.
 
+## Endpoints
+
+| Endpoint           | Description                                        |
+| ------------------ | -------------------------------------------------- |
+| `/authorized_keys` | Returns all public keys from the `keys/` directory |
+| `/sync.sh`         | Returns the sync script                            |
+| `/initialize`      | Returns an installer script for initial setup      |
+
+### Manual Sync
+
+To manually trigger a sync without installing:
+
+```sh
+curl -fsSL https://ssh-keys.kye.dev/sync.sh | sh
+```
+
+### View Current Keys
+
+```sh
+curl https://ssh-keys.kye.dev/authorized_keys
+```
+
 ## Development
 
-```bash
+```sh
 deno task dev
 ```
 
 ## Deployment
 
-```bash
+```sh
 deno task deploy
 ```
