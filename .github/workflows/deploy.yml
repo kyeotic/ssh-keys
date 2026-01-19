@@ -16,10 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-
       - name: Deploy to Deno Deploy
-        run: deno task deploy
-        env:
-          DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
+        uses: denoland/deployctl@v1
+        with:
+          project: kyeotic-ssh-keys
+          entrypoint: src/server.ts
+          include: |
+            src/
+            keys/
+            deno.json
