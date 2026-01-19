@@ -1,6 +1,6 @@
 #!/bin/sh
 # SSH Keys Sync Installer
-# Run with: curl -fsSL https://ssh-keys.kye.dev/initialize | sh
+# Run with: curl -fsSL https://ssh-keys.kye.dev/install | sh
 # (use sudo if not running as root)
 
 set -e

@@ -8,10 +8,10 @@ Run the following command to install the sync script and set up hourly cron:
 
 ```sh
 # As root:
-curl -fsSL https://ssh-keys.kye.dev/initialize | sh
+curl -fsSL https://ssh-keys.kye.dev/install | sh
 
 # Or with sudo:
-curl -fsSL https://ssh-keys.kye.dev/initialize | sudo sh
+curl -fsSL https://ssh-keys.kye.dev/install | sudo sh
 ```
 
 This will:
@@ -26,14 +26,14 @@ This server provides a managed subset of SSH keys that can be synced to `~/.ssh/
 
 ## How It Works
 
-The sync script manages a section of your `~/.ssh/authorized_keys` file between these markers:
+The sync script manages a section of your `~/.ssh/authorized_keys` file between markers based on the server host:
 
 ```
-# BEGIN KYEOTIC MANAGED KEYS
+# BEGIN SSH-KEYS.KYE.DEV MANAGED KEYS
 # Auto-synced from https://ssh-keys.kye.dev
 # Last updated: ...
 ssh-ed25519 AAAA... user@host
-# END KYEOTIC MANAGED KEYS
+# END SSH-KEYS.KYE.DEV MANAGED KEYS
 ```
 
 Any keys outside these markers are preserved and unaffected by syncs.
@@ -51,7 +51,7 @@ All machines will pick up the changes on their next hourly sync.
 | ------------------ | -------------------------------------------------- |
 | `/authorized_keys` | Returns all public keys from the `keys/` directory |
 | `/sync.sh`         | Returns the sync script                            |
-| `/initialize`      | Returns an installer script for initial setup      |
+| `/install`      | Returns an installer script for initial setup      |
 
 ### Manual Sync
 

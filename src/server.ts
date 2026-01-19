@@ -2,6 +2,7 @@ const KEYS_DIR = new URL('../keys/', import.meta.url)
 const SYNC_SCRIPT_PATH = new URL('./sync.sh', import.meta.url)
 const INIT_SCRIPT_PATH = new URL('./init.sh', import.meta.url)
 const SERVER_URL_PLACEHOLDER = '__SERVER_URL__'
+const MARKER_ID_PLACEHOLDER = '__MARKER_ID__'
 
 // Cached file contents (lazy-loaded)
 let cachedAuthorizedKeys: string | null = null
@@ -11,6 +12,11 @@ let cachedInitScript: string | null = null
 function getServerUrl(req: Request): string {
   const url = new URL(req.url)
   return `${url.protocol}//${url.host}`
+}
+
+function getMarkerId(req: Request): string {
+  const url = new URL(req.url)
+  return url.host.toUpperCase()
 }
 
 async function getAuthorizedKeys(): Promise<string> {
@@ -46,12 +52,12 @@ export async function handler(req: Request): Promise<Response> {
   const path = url.pathname
 
   const serverUrl = getServerUrl(req)
+  const markerId = getMarkerId(req)
 
   if (path === '/sync.sh') {
-    const script = (await getSyncScript()).replaceAll(
-      SERVER_URL_PLACEHOLDER,
-      serverUrl,
-    )
+    const script = (await getSyncScript())
+      .replaceAll(SERVER_URL_PLACEHOLDER, serverUrl)
+      .replaceAll(MARKER_ID_PLACEHOLDER, markerId)
     return new Response(script, {
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     })
@@ -64,7 +70,7 @@ export async function handler(req: Request): Promise<Response> {
     })
   }
 
-  if (path === '/initialize') {
+  if (path === '/install') {
     const script = (await getInitializeScript()).replaceAll(
       SERVER_URL_PLACEHOLDER,
       serverUrl,

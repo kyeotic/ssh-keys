@@ -6,8 +6,8 @@ AUTHORIZED_KEYS="$HOME/.ssh/authorized_keys"
 TEMP_FILE=$(mktemp)
 
 # Marker comments
-START_MARKER="# BEGIN KYEOTIC MANAGED KEYS"
-END_MARKER="# END KYEOTIC MANAGED KEYS"
+START_MARKER="# BEGIN __MARKER_ID__ MANAGED KEYS"
+END_MARKER="# END __MARKER_ID__ MANAGED KEYS"
 
 # Create authorized_keys if it doesn't exist
 mkdir -p ~/.ssh

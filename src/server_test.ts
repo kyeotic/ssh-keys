@@ -31,7 +31,7 @@ Deno.test("GET /authorized_keys returns public keys", async () => {
   assertStringIncludes(body, "ssh-");
 });
 
-Deno.test("GET /sync.sh returns sync script with replaced URL", async () => {
+Deno.test("GET /sync.sh returns sync script with replaced URL and marker", async () => {
   const req = new Request(`${BASE_URL}/sync.sh`);
   const res = await handler(req);
 
@@ -41,11 +41,11 @@ Deno.test("GET /sync.sh returns sync script with replaced URL", async () => {
   const body = await res.text();
   assertStringIncludes(body, "#!/bin/sh");
   assertStringIncludes(body, `SERVER_URL="${BASE_URL}"`);
-  assertStringIncludes(body, "KYEOTIC MANAGED KEYS");
+  assertStringIncludes(body, "SSH-KEYS.KYE.DEV MANAGED KEYS");
 });
 
-Deno.test("GET /initialize returns init script with replaced URL", async () => {
-  const req = new Request(`${BASE_URL}/initialize`);
+Deno.test("GET /install returns init script with replaced URL", async () => {
+  const req = new Request(`${BASE_URL}/install`);
   const res = await handler(req);
 
   assertEquals(res.status, 200);
@@ -66,11 +66,12 @@ Deno.test("GET /unknown returns 404", async () => {
   assertEquals(await res.text(), "Not Found\n");
 });
 
-Deno.test("URL replacement uses request host", async () => {
+Deno.test("URL and marker replacement uses request host", async () => {
   const customHost = "https://custom.example.com";
   const req = new Request(`${customHost}/sync.sh`);
   const res = await handler(req);
 
   const body = await res.text();
   assertStringIncludes(body, `SERVER_URL="${customHost}"`);
+  assertStringIncludes(body, "CUSTOM.EXAMPLE.COM MANAGED KEYS");
 });
