@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # sync-ssh-keys.sh
 
 SERVER_URL="__SERVER_URL__"

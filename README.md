@@ -8,20 +8,24 @@ This server provides a managed subset of SSH keys that can be synced to `~/.ssh/
 
 ## Endpoints
 
-| Endpoint | Description |
-|----------|-------------|
+| Endpoint           | Description                                        |
+| ------------------ | -------------------------------------------------- |
 | `/authorized_keys` | Returns all public keys from the `keys/` directory |
-| `/sync.sh` | Returns the sync script |
-| `/initialize` | Returns an installer script for initial setup |
+| `/sync.sh`         | Returns the sync script                            |
+| `/initialize`      | Returns an installer script for initial setup      |
 
 ## Usage
 
 ### Initial Setup (New Machine)
 
-Run the following command with sudo to install the sync script and set up hourly cron:
+Run the following command to install the sync script and set up hourly cron:
 
-```bash
-curl -fsSL https://ssh-keys.kye.dev/initialize | sudo bash
+```sh
+# As root:
+curl -fsSL https://ssh-keys.kye.dev/initialize | sh
+
+# Or with sudo:
+curl -fsSL https://ssh-keys.kye.dev/initialize | sudo sh
 ```
 
 This will:
@@ -35,7 +39,7 @@ This will:
 To manually trigger a sync without installing:
 
 ```bash
-curl -fsSL https://ssh-keys.kye.dev/sync.sh | bash
+curl -fsSL https://ssh-keys.kye.dev/sync.sh | sh
 ```
 
 ### View Current Keys

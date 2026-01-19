@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 # SSH Keys Sync Installer
-# Run with: curl -fsSL https://ssh-keys.kye.dev/initialize | sudo bash
+# Run with: curl -fsSL https://ssh-keys.kye.dev/initialize | sh
+# (use sudo if not running as root)
 
 set -e
 
@@ -17,11 +18,13 @@ chmod +x "${SCRIPT_PATH}"
 
 echo "Script installed to ${SCRIPT_PATH}"
 
-# Add cron job to run hourly (if not already present)
-CRON_JOB="0 * * * * ${SCRIPT_PATH}"
+# Determine target user for cron and sync
+# If run via sudo, use the original user; otherwise use current user
 CRON_USER="${SUDO_USER:-${USER}}"
 
-# Check if cron job already exists for this user
+# Add cron job to run hourly (if not already present)
+CRON_JOB="0 * * * * ${SCRIPT_PATH}"
+
 if ! crontab -u "${CRON_USER}" -l 2>/dev/null | grep -qF "${SCRIPT_NAME}"; then
   (crontab -u "${CRON_USER}" -l 2>/dev/null || true; echo "${CRON_JOB}") | crontab -u "${CRON_USER}" -
   echo "Cron job added for user ${CRON_USER} to run hourly"
@@ -31,6 +34,10 @@ fi
 
 # Run initial sync
 echo "Running initial sync..."
-sudo -u "${CRON_USER}" "${SCRIPT_PATH}"
+if [ -n "${SUDO_USER}" ] && command -v sudo > /dev/null 2>&1; then
+  sudo -u "${CRON_USER}" "${SCRIPT_PATH}"
+else
+  "${SCRIPT_PATH}"
+fi
 
 echo "Done! SSH keys will sync hourly."
