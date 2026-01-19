@@ -10,7 +10,7 @@ variable "region" {
 }
 
 variable "domain_name" {
-  default = "APP_NAME.kye.dev"
+  default = "ssh-keys.kye.dev"
 }
 
 variable "zone_name" {
@@ -18,5 +18,5 @@ variable "zone_name" {
 }
 
 variable "deno_deploy_acme" {
-  default = "84e3160caf2e7082aeb72eb8._acme.deno.dev."
+  default = "829cf5a52ad1be5657b6a40e._acme.deno.dev."
 }
