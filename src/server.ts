@@ -1,6 +1,7 @@
 const KEYS_DIR = new URL('../keys/', import.meta.url)
 const SYNC_SCRIPT_PATH = new URL('./sync.sh', import.meta.url)
 const INIT_SCRIPT_PATH = new URL('./init.sh', import.meta.url)
+const REINSTALL_SCRIPT_PATH = new URL('./reinstall.sh', import.meta.url)
 const SERVER_URL_PLACEHOLDER = '__SERVER_URL__'
 const MARKER_ID_PLACEHOLDER = '__MARKER_ID__'
 
@@ -8,6 +9,7 @@ const MARKER_ID_PLACEHOLDER = '__MARKER_ID__'
 let cachedAuthorizedKeys: string | null = null
 let cachedSyncScript: string | null = null
 let cachedInitScript: string | null = null
+let cachedReinstallScript: string | null = null
 
 function getServerUrl(req: Request): string {
   const url = new URL(req.url)
@@ -47,6 +49,13 @@ async function getInitializeScript(): Promise<string> {
   return cachedInitScript
 }
 
+async function getReinstallScript(): Promise<string> {
+  if (cachedReinstallScript === null) {
+    cachedReinstallScript = await Deno.readTextFile(REINSTALL_SCRIPT_PATH)
+  }
+  return cachedReinstallScript
+}
+
 export async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
   const path = url.pathname
@@ -72,6 +81,16 @@ export async function handler(req: Request): Promise<Response> {
 
   if (path === '/install') {
     const script = (await getInitializeScript()).replaceAll(
+      SERVER_URL_PLACEHOLDER,
+      serverUrl,
+    )
+    return new Response(script, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    })
+  }
+
+  if (path === '/reinstall') {
+    const script = (await getReinstallScript()).replaceAll(
       SERVER_URL_PLACEHOLDER,
       serverUrl,
     )

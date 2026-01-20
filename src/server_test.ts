@@ -42,6 +42,10 @@ Deno.test("GET /sync.sh returns sync script with replaced URL and marker", async
   assertStringIncludes(body, "#!/bin/sh");
   assertStringIncludes(body, `SERVER_URL="${BASE_URL}"`);
   assertStringIncludes(body, "SSH-KEYS.KYE.DEV MANAGED KEYS");
+  // Verify status output messages
+  assertStringIncludes(body, 'echo "error"');
+  assertStringIncludes(body, 'echo "unchanged"');
+  assertStringIncludes(body, 'echo "updated"');
 });
 
 Deno.test("GET /install returns init script with replaced URL", async () => {
@@ -56,6 +60,22 @@ Deno.test("GET /install returns init script with replaced URL", async () => {
   assertStringIncludes(body, `SERVER_URL="${BASE_URL}"`);
   assertStringIncludes(body, "sync-ssh-keys");
   assertStringIncludes(body, "crontab");
+});
+
+Deno.test("GET /reinstall returns reinstall script with replaced URL and status outputs", async () => {
+  const req = new Request(`${BASE_URL}/reinstall`);
+  const res = await handler(req);
+
+  assertEquals(res.status, 200);
+  assertEquals(res.headers.get("Content-Type"), "text/plain; charset=utf-8");
+
+  const body = await res.text();
+  assertStringIncludes(body, "#!/bin/sh");
+  assertStringIncludes(body, `SERVER_URL="${BASE_URL}"`);
+  // Verify status output messages
+  assertStringIncludes(body, 'echo "error"');
+  assertStringIncludes(body, 'echo "unchanged"');
+  assertStringIncludes(body, 'echo "updated"');
 });
 
 Deno.test("GET /unknown returns 404", async () => {
