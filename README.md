@@ -51,7 +51,7 @@ All machines will pick up the changes on their next hourly sync.
 | ------------------ | -------------------------------------------------- |
 | `/authorized_keys` | Returns all public keys from the `keys/` directory |
 | `/sync.sh`         | Returns the sync script                            |
-| `/install`      | Returns an installer script for initial setup      |
+| `/install`         | Returns an installer script for initial setup      |
 
 ### Manual Sync
 
@@ -60,6 +60,16 @@ To manually trigger a sync without installing:
 ```sh
 curl -fsSL https://ssh-keys.kye.dev/sync.sh | sh
 ```
+
+
+### Reinstalling
+
+To update an existing install
+
+```sh
+curl -fsSL https://ssh-keys.kye.dev/reinstall | sh
+```
+
 
 ### View Current Keys
 

@@ -23,7 +23,8 @@ echo "Script installed to ${SCRIPT_PATH}"
 CRON_USER="${SUDO_USER:-${USER}}"
 
 # Add cron job to run hourly (if not already present)
-CRON_JOB="0 * * * * ${SCRIPT_PATH}"
+# Suppress output unless there's an error to avoid noisy emails
+CRON_JOB="0 * * * * OUTPUT=\$(${SCRIPT_PATH} 2>&1) || echo \"\$OUTPUT\""
 
 if ! crontab -u "${CRON_USER}" -l 2>/dev/null | grep -qF "${SCRIPT_NAME}"; then
   (crontab -u "${CRON_USER}" -l 2>/dev/null || true; echo "${CRON_JOB}") | crontab -u "${CRON_USER}" -

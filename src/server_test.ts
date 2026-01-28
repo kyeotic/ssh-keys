@@ -75,7 +75,11 @@ Deno.test("GET /reinstall returns reinstall script with replaced URL and status 
   // Verify status output messages
   assertStringIncludes(body, 'echo "error"');
   assertStringIncludes(body, 'echo "unchanged"');
-  assertStringIncludes(body, 'echo "updated"');
+  assertStringIncludes(body, 'echo "updated script and cron"');
+  assertStringIncludes(body, 'echo "updated script"');
+  assertStringIncludes(body, 'echo "updated cron"');
+  // Verify crontab update logic is present
+  assertStringIncludes(body, "crontab");
 });
 
 Deno.test("GET /unknown returns 404", async () => {
