@@ -1,7 +1,4 @@
-import syncScript from './sync.sh'
-import initScript from './init.sh'
-import reinstallScript from './reinstall.sh'
-import { authorizedKeys } from './keys-generated'
+import { authorizedKeys, syncScript, initScript, reinstallScript } from './keys-generated'
 
 const SERVER_URL_PLACEHOLDER = '__SERVER_URL__'
 const MARKER_ID_PLACEHOLDER = '__MARKER_ID__'

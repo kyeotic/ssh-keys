@@ -2,6 +2,12 @@ import { test, expect, vi, beforeAll } from 'vitest'
 
 vi.mock('./keys-generated', () => ({
   authorizedKeys: 'ssh-ed25519 AAAAtest test-key\n',
+  syncScript:
+    '#!/bin/sh\nSERVER_URL="__SERVER_URL__"\nSTART_MARKER="# BEGIN __MARKER_ID__ MANAGED KEYS"\nEND_MARKER="# END __MARKER_ID__ MANAGED KEYS"\necho "error"\necho "unchanged"\necho "updated"\n',
+  initScript:
+    '#!/bin/sh\nSERVER_URL="__SERVER_URL__"\nSCRIPT_NAME="sync-ssh-keys"\ncrontab -u "${CRON_USER}" -\n',
+  reinstallScript:
+    '#!/bin/sh\nSERVER_URL="__SERVER_URL__"\ncrontab -u "${CRON_USER}" -\necho "error"\necho "unchanged"\necho "updated script and cron"\necho "updated script"\necho "updated cron"\n',
 }))
 
 const { handler } = await import('./worker')

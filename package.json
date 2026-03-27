@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "build": "node scripts/build-keys.js",
     "dev": "node scripts/build-keys.js && wrangler dev",
     "test": "vitest run",
     "deploy": "wrangler deploy",
@@ -8,6 +9,6 @@
   },
   "devDependencies": {
     "vitest": "^3.0.0",
-    "wrangler": "^4.0.0"
+    "wrangler": "^4.78.0"
   }
 }

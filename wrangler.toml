@@ -1,13 +1,8 @@
-name = "kye-ssh-keys"
+name = "ssh-keys"
 main = "src/worker.ts"
-compatibility_date = "2025-01-01"
-routes = [
-  { pattern = "ssh-keys.kye.dev/*", zone_name = "kye.dev" }
-]
-
-[[rules]]
-type = "Text"
-globs = ["**/*.sh"]
+compatibility_date = "2026-03-27"
+routes = [{ pattern = "ssh-keys.kye.dev/*", zone_name = "kye.dev" }]
+preview_urls = false
 
 [build]
 command = "node scripts/build-keys.js"
