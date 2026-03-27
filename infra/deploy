@@ -6,7 +6,7 @@ _project="${_scripts}/.."
 _infra="${_scripts}/../infra"
 APPNAME="ssh-keys"
 
-# Terraform state, bucket name
+# Terraform state, bucket name (AWS used only for S3 backend)
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq -r '.Account')
 terraform_state_bucket="terraform-remote-$AWS_ACCOUNT_ID"
 
@@ -22,4 +22,3 @@ terraform init \
 
 terraform apply -auto-approve
 popd
-
