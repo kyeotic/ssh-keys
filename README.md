@@ -1,6 +1,6 @@
 # SSH Keys Server
 
-A Deno Deploy server for managing and syncing SSH public keys across homelab machines.
+A Cloudflare Workers server for managing and syncing SSH public keys across homelab machines.
 
 ## Quick Start
 
@@ -80,11 +80,11 @@ curl https://ssh-keys.kye.dev/authorized_keys
 ## Development
 
 ```sh
-deno task dev
+npm run dev
 ```
 
 ## Deployment
 
 ```sh
-deno task deploy
+npm run deploy
 ```
